@@ -8,12 +8,14 @@ android {
 
     defaultConfig {
         applicationId "com.example.calculator"
-        minSdk 21
+        minSdk 29
         targetSdk 32
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        targetSdkVersion 32
+        minSdkVersion 29
     }
 
     buildTypes {
@@ -29,6 +31,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    compileSdkVersion 32
 }
 
 dependencies {
