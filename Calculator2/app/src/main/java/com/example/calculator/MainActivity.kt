@@ -6,20 +6,44 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.R.string
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Switch
+import com.example.calculator.databinding.ActivityMainBinding
 import java.text.ParseException
 import java.util.*
 
 
 //import net.objecthunter.exp4j.ExpressionBuilder
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+class MainActivity : AppCompatActivity(), View.OnClickListener
+{
+    private lateinit var binding: ActivityMainBinding
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        var view = binding.root
+        setContentView(view)
         currentExpressionText = findViewById(R.id.currentExpressionText)
         resultExpressionText = findViewById(R.id.resultExpressionText)
+        binding.button0.setOnClickListener(this)
+        binding.button1.setOnClickListener(this)
+        binding.button2.setOnClickListener(this)
+        binding.button3.setOnClickListener(this)
+        binding.button4.setOnClickListener(this)
+        binding.button5.setOnClickListener(this)
+        binding.button6.setOnClickListener(this)
+        binding.button7.setOnClickListener(this)
+        binding.button8.setOnClickListener(this)
+        binding.button9.setOnClickListener(this)
+        binding.buttonDivide.setOnClickListener(this)
+        binding.buttonErase.setOnClickListener(this)
+        binding.buttonMultiply.setOnClickListener(this)
+        binding.buttonSubstract.setOnClickListener(this)
+        binding.buttonSum.setOnClickListener(this)
+        binding.buttonDot.setOnClickListener(this)
+        binding.buttonEquals.setOnClickListener(this)
     }
 //    lateinit var outputTextView: TextView
     lateinit var currentExpressionText: TextView
@@ -33,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 //    var nonZeroDigit: CharArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9')
     var digit: CharArray = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
     var zero: CharArray = charArrayOf('0')
-    var operation: CharArray = charArrayOf('+', '-', '×', '/')
+    var operation: CharArray = charArrayOf('+', '-', '×', '÷')
     var equal: CharArray = charArrayOf('=')
     var separator: CharArray = charArrayOf('.')
     var operationPriorities: Map<Char, Int> = mapOf('+' to 1, '-' to 1, '*' to 2, '/' to 2)
@@ -129,11 +153,18 @@ class MainActivity : AppCompatActivity() {
                         secondOperand = st.pop()
                         st.push(st.pop() - secondOperand)
                     }
-                    "/" -> {
+                    "÷" -> {
                         secondOperand = st.pop()
                         if (secondOperand != 0.0)
                         {
                             st.push(st.pop() / secondOperand)
+                        }
+                        else
+                        {
+//                            resultExpressionText.text = "Error".toString()
+                            errorExpressionEntered = true
+                            lastDigitEntered = false
+                            return 0.0
                         }
                     }
                     "^" -> {
@@ -150,6 +181,11 @@ class MainActivity : AppCompatActivity() {
 
     fun onDigitEnter (view: View)
     {
+        clearCurrentExpression()
+        if(isEvaluatedExpression)
+        {
+            isEvaluatedExpression = false
+        }
         if (errorExpressionEntered)
         {
             currentExpressionText.text = (view as Button).text
@@ -157,11 +193,6 @@ class MainActivity : AppCompatActivity() {
         }
         else
         {
-            if(isEvaluatedExpression)
-            {
-                currentExpressionText.text = ""
-                isEvaluatedExpression = false
-            }
             currentExpressionText.append((view as Button).text)
         }
         lastDigitEntered = true
@@ -169,6 +200,7 @@ class MainActivity : AppCompatActivity() {
 
     fun onDotEnter (view: View)
     {
+        clearCurrentExpression()
         if (lastDigitEntered && !errorExpressionEntered && !lastDotEntered)
         {
             currentExpressionText.append(".")
@@ -179,6 +211,7 @@ class MainActivity : AppCompatActivity() {
 
     fun onOperatorEnter (view: View)
     {
+        clearCurrentExpression()
         if (lastDigitEntered && !errorExpressionEntered)
         {
             currentExpressionText.append((view as Button).text)
@@ -189,29 +222,51 @@ class MainActivity : AppCompatActivity() {
 
     fun onEraseEnter (view: View)
     {
-        if(isEvaluatedExpression)
+        clearCurrentExpression()
+        if (!currentExpressionText.text.isEmpty())
         {
-            this.currentExpressionText.text = ""
+            if (separator.contains(currentExpressionText.text[currentExpressionText.text.length - 1]))
+            {
+                lastDotEntered = false
+            }
         }
         this.currentExpressionText.text = this.currentExpressionText.text.dropLast(1)
-        lastDigitEntered = false
+        if (!currentExpressionText.text.isEmpty())
+        {
+            if (separator.contains(currentExpressionText.text[currentExpressionText.text.length - 1]))
+            {
+                lastDotEntered = true
+            }
+            else if(digit.contains(currentExpressionText.text[currentExpressionText.text.length - 1]))
+            {
+                lastDigitEntered = true
+            }
+        }
+        /*lastDigitEntered = false
         errorExpressionEntered = false
-        lastDotEntered = false
+        lastDotEntered = false*/
     }
 
     fun onEqualsEnter (view: View)
     {
-
         if (lastDigitEntered && !errorExpressionEntered)
         {
-            val currentExpression = currentExpressionText.text.toString()
+            var currentExpression = currentExpressionText.text.toString()
             Log.d("Before infixToRPN: ", currentExpression)
 //            print("Before infixToRPN: " + currentExpression)
             try
             {
-                val temp: String = infixToRPN(currentExpression)
+                var temp: String = infixToRPN(currentExpression)
                 Log.d("After infixToRPN: ", temp)
-                resultExpressionText.text = RPNComputation(temp).toString()
+                temp = RPNComputation(temp).toString()
+                if(errorExpressionEntered)
+                {
+                    resultExpressionText.text = "Error"
+                }
+                else
+                {
+                    resultExpressionText.text = temp
+                }
                 Log.d("After RPNComputation: ", resultExpressionText.text.toString())
 //                val result = expression.evaluate()
 //                resultExpressionText.text = result.toString()
@@ -224,6 +279,8 @@ class MainActivity : AppCompatActivity() {
                 lastDigitEntered = false
             }
         }
+        lastDigitEntered = false
+        lastDotEntered = false
         isEvaluatedExpression = true
     }
     fun onAdditionalOptionsEnter (view: View)
@@ -234,5 +291,53 @@ class MainActivity : AppCompatActivity() {
     fun onRadiansDegreeEnter (view: View)
     {
 
+    }
+
+    fun clearCurrentExpression ()
+    {
+        if (isEvaluatedExpression)
+        {
+            this.currentExpressionText.text = ""
+        }
+    }
+
+    override fun onClick(v: View)
+    {
+        if (v.id in listOf(
+                R.id.button_0,
+                R.id.button_1,
+                R.id.button_2,
+                R.id.button_3,
+                R.id.button_4,
+                R.id.button_5,
+                R.id.button_6,
+                R.id.button_7,
+                R.id.button_8,
+                R.id.button_9
+            ))
+        {
+            onDigitEnter(v)
+        }
+        else if (v.id in listOf(
+                R.id.button_divide,
+                R.id.button_multiply,
+                R.id.button_substract,
+                R.id.button_sum
+            ))
+        {
+            onOperatorEnter(v)
+        }
+        else if (v.id == R.id.button_dot)
+        {
+            onDotEnter(v)
+        }
+        else if (v.id == R.id.button_equals)
+        {
+            onEqualsEnter(v)
+        }
+        else
+        {
+            onEraseEnter(v)
+        }
     }
 }
