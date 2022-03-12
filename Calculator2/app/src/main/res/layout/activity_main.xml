@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,15 +28,15 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="RAD"
+                    android:text="@string/radians"
                     android:textColor="#868a8d" />
 
                 <Button
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="35dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:text="⋮"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/tree_dots"
                     android:textColor="#000000"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -66,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="0"/>
+                    android:text="@string/zero"/>
 
             </LinearLayout>
 
@@ -91,7 +90,7 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_alignParentStart="true"
-                    android:text="7"
+                    android:text="@string/seven"
                     android:textSize="30sp"/>
 
                 <Button
@@ -100,7 +99,7 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_below="@id/button_7"
-                    android:text="4"
+                    android:text="@string/four"
                     android:textSize="30sp"/>
 
                 <Button
@@ -109,8 +108,8 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_below="@id/button_4"
-                    android:text="1"
-                    android:textSize="30sp"/>
+                    android:text="@string/one"
+                    android:textSize="30sp" />
 
                 <Button
                     android:id="@+id/button_0"
@@ -118,7 +117,7 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_below="@id/button_1"
-                    android:text="0"
+                    android:text="@string/zero"
                     android:textSize="30sp" />
 
                 <Button
@@ -126,8 +125,8 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="90dp"
                     android:layout_height="122dp"
-                    android:layout_toRightOf="@id/button_7"
-                    android:text="8"
+                    android:layout_toEndOf="@id/button_7"
+                    android:text="@string/eight"
                     android:textSize="30sp"/>
 
                 <Button
@@ -136,8 +135,8 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_below="@id/button_8"
-                    android:layout_toRightOf="@id/button_4"
-                    android:text="5"
+                    android:layout_toEndOf="@id/button_4"
+                    android:text="@string/five"
                     android:textSize="30sp"/>
 
                 <Button
@@ -146,8 +145,8 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_below="@id/button_5"
-                    android:layout_toRightOf="@id/button_1"
-                    android:text="2"
+                    android:layout_toEndOf="@id/button_1"
+                    android:text="@string/two"
                     android:textSize="30sp"/>
 
                 <Button
@@ -156,8 +155,8 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_below="@id/button_2"
-                    android:layout_toRightOf="@id/button_0"
-                    android:text="."
+                    android:layout_toEndOf="@id/button_0"
+                    android:text="@string/dot"
                     android:textSize="30sp"/>
 
                 <Button
@@ -165,8 +164,8 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="90dp"
                     android:layout_height="122dp"
-                    android:layout_toRightOf="@id/button_8"
-                    android:text="9"
+                    android:layout_toEndOf="@id/button_8"
+                    android:text="@string/nine"
                     android:textSize="30sp"/>
 
                 <Button
@@ -175,8 +174,8 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_below="@id/button_9"
-                    android:layout_toRightOf="@id/button_5"
-                    android:text="6"
+                    android:layout_toEndOf="@id/button_5"
+                    android:text="@string/six"
                     android:textSize="30sp"/>
 
                 <Button
@@ -185,8 +184,8 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_below="@id/button_6"
-                    android:layout_toRightOf="@id/button_2"
-                    android:text="3"
+                    android:layout_toEndOf="@id/button_2"
+                    android:text="@string/three"
                     android:textSize="30sp"/>
 
                 <Button
@@ -195,8 +194,8 @@
                     android:layout_width="90dp"
                     android:layout_height="122dp"
                     android:layout_below="@id/button_3"
-                    android:layout_toRightOf="@id/button_dot"
-                    android:text="="
+                    android:layout_toEndOf="@id/button_dot"
+                    android:text="@string/equals"
                     android:textSize="30sp" />
 
             </RelativeLayout>
@@ -219,7 +218,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="⌫"
+                    android:text="@string/backspace"
                     android:textColor="#1b73ea"
                     android:textSize="30sp"/>
 
@@ -229,7 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="÷"
+                    android:text="@string/division"
                     android:textColor="#1b73ea"
                     android:textSize="30sp"/>
 
@@ -239,17 +238,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="×"
+                    android:text="@string/multiplication"
                     android:textColor="#1b73ea"
                     android:textSize="30sp"/>
 
                 <Button
-                    android:id="@+id/button_substract"
+                    android:id="@+id/button_subtract"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="-"
+                    android:text="@string/minus"
                     android:textColor="#1b73ea"
                     android:textSize="40sp"/>
 
@@ -259,7 +258,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="+"
+                    android:text="@string/plus"
                     android:textColor="#1b73ea"
                     android:textSize="30sp"/>
 
@@ -275,7 +274,7 @@
                     style="@style/Slider_style"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="ᑉ"/>
+                    android:text="@string/left_arrow"/>
 
             </LinearLayout>
 

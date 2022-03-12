@@ -5,25 +5,33 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.R.string
-import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Switch
 import com.example.calculator.databinding.ActivityMainBinding
-import java.text.ParseException
 import java.util.*
 
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-//import net.objecthunter.exp4j.ExpressionBuilder
-
-class MainActivity : AppCompatActivity(), View.OnClickListener
-{
     private lateinit var binding: ActivityMainBinding
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    private lateinit var currentExpressionText: TextView
+    private lateinit var resultExpressionText: TextView
+    private var lastDigitEntered: Boolean = false
+    private var errorExpressionEntered: Boolean = false
+    private var lastDotEntered: Boolean = false
+    private var isEvaluatedExpression: Boolean = false
+    private var digit: CharArray = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+    private var operation: CharArray = charArrayOf('+', '-', '×', '÷')
+    private var separator: CharArray = charArrayOf('.')
+    private var operationPriorities: Map<Char, Int> = mapOf('+' to 1, '-' to 1, '*' to 2, '/' to 2)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        var view = binding.root
+
+        initUI()
+    }
+
+    private fun initUI() {
+        val view = binding.root
         setContentView(view)
         currentExpressionText = findViewById(R.id.currentExpressionText)
         resultExpressionText = findViewById(R.id.resultExpressionText)
@@ -40,80 +48,53 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         binding.buttonDivide.setOnClickListener(this)
         binding.buttonErase.setOnClickListener(this)
         binding.buttonMultiply.setOnClickListener(this)
-        binding.buttonSubstract.setOnClickListener(this)
+        binding.buttonSubtract.setOnClickListener(this)
         binding.buttonSum.setOnClickListener(this)
         binding.buttonDot.setOnClickListener(this)
         binding.buttonEquals.setOnClickListener(this)
     }
-//    lateinit var outputTextView: TextView
-    lateinit var currentExpressionText: TextView
-    lateinit var resultExpressionText: TextView
 
-
-    var lastDigitEntered: Boolean = false
-    var errorExpressionEntered: Boolean = false
-    var lastDotEntered :Boolean = false
-    var isEvaluatedExpression: Boolean = false
-//    var nonZeroDigit: CharArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9')
-    var digit: CharArray = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
-    var zero: CharArray = charArrayOf('0')
-    var operation: CharArray = charArrayOf('+', '-', '×', '÷')
-    var equal: CharArray = charArrayOf('=')
-    var separator: CharArray = charArrayOf('.')
-    var operationPriorities: Map<Char, Int> = mapOf('+' to 1, '-' to 1, '*' to 2, '/' to 2)
-
-    fun getPriority (s: Char): Int
-    {
-        val answer: Int = 0
+    private fun getPriority(s: Char): Int {
+        val answer = 0
         operationPriorities.getOrDefault(s, answer)
         return answer
     }
 
-    fun infixToRPN (s: String): String
-    {
-        var st: Stack<String> = Stack()
-        var answer: String = ""
-        var numberAdded: Boolean = false
-        var i: Int = 0
-        while (i < s.length)
-        {
-            var tempDigit: String = ""
+    private fun infixToRPN(s: String): String {
+        val st: Stack<String> = Stack()
+        var answer = ""
+        var numberAdded = false
+        var i = 0
+        while (i < s.length) {
+            var tempDigit = ""
             var j: Int = i
             numberAdded = false
-            while (s.length > j && (digit.contains(s[j]) || separator.contains(s[j])))
-            {
+            while (s.length > j && (digit.contains(s[j]) || separator.contains(s[j]))) {
                 numberAdded = true
                 tempDigit += s[j]
                 j++
             } // reading float number here
-            if (numberAdded)
-            {
-                answer += tempDigit + " "
+            if (numberAdded) {
+                answer += "$tempDigit "
                 i = j - 1
             }
-            if (s[i] == '(')
-            {
+            if (s[i] == '(') {
                 st.push(s[i].toString())
                 continue
             }
-            if (s[i] == ')')
-            {
-                while(st.peek() != "(")
-                {
+            if (s[i] == ')') {
+                while (st.peek() != "(") {
                     answer += st.pop() + " "
                 }
-                if (st.peek() == "(")
-                {
+                if (st.peek() == "(") {
                     st.pop()
                 }
                 continue
             }
-            if (operation.contains(s[i]))
-            {
-                var myLog: String = i.toString() + " " + answer + " " + st.toString()
+            if (operation.contains(s[i])) {
+                val myLog = "$i $answer $st"
                 Log.d(s[i].toString(), myLog)
-                while(st.size > 0 && (getPriority(st.peek()[0]) >= getPriority(s[i])) )
-                {
+                while (st.size > 0 && (getPriority(st.peek()[0]) >= getPriority(s[i]))) {
                     print("pushed operator")
                     answer += st.pop() + " "
                 }
@@ -124,29 +105,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
             i++
 
         }
-        while (st.size > 0)
-        {
+        while (st.size > 0) {
             answer += st.pop() + " "
         }
         return answer
     }
 
-    fun RPNComputation (s: String): Double
-    {
-        var arguments: List<String> = s.split(" ")
-        var st: Stack<Double> = Stack()
-        var i: Int = 0
-        while (i < arguments.size)
-        {
-            try
-            {
+    private fun functionRPNComputation(s: String): Double {
+        val arguments: List<String> = s.split(" ")
+        val st: Stack<Double> = Stack()
+        var i = 0
+        while (i < arguments.size) {
+            try {
                 st.push(arguments[i].toDouble())
-            }
-            catch (e: Exception)
-            {
+            } catch (e: Exception) {
                 var secondOperand: Double
-                when (arguments[i])
-                {
+                when (arguments[i]) {
                     "+" -> st.push(st.pop() + st.pop())
                     "×" -> st.push(st.pop() * st.pop())
                     "-" -> {
@@ -155,13 +129,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
                     }
                     "÷" -> {
                         secondOperand = st.pop()
-                        if (secondOperand != 0.0)
-                        {
+                        if (secondOperand != 0.0) {
                             st.push(st.pop() / secondOperand)
-                        }
-                        else
-                        {
-//                            resultExpressionText.text = "Error".toString()
+                        } else {
                             errorExpressionEntered = true
                             lastDigitEntered = false
                             return 0.0
@@ -171,110 +141,83 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
                         secondOperand = st.pop()
                         st.push(Math.pow(st.pop(), secondOperand))
                     }
-                    else -> {}
+                    else -> Unit
                 }
             }
             i++
         }
-        return  st.pop()
+        return st.pop()
     }
 
-    fun onDigitEnter (view: View)
-    {
+    private fun onDigitEnter(view: View) {
         clearCurrentExpression()
-        if(isEvaluatedExpression)
-        {
+        if (isEvaluatedExpression) {
             isEvaluatedExpression = false
         }
-        if (errorExpressionEntered)
-        {
+        if (errorExpressionEntered) {
             currentExpressionText.text = (view as Button).text
             errorExpressionEntered = false
-        }
-        else
-        {
+        } else {
             currentExpressionText.append((view as Button).text)
         }
         lastDigitEntered = true
     }
 
-    fun onDotEnter (view: View)
-    {
+    private fun onDotEnter() {
         clearCurrentExpression()
-        if (lastDigitEntered && !errorExpressionEntered && !lastDotEntered)
-        {
+        if (lastDigitEntered && !errorExpressionEntered && !lastDotEntered) {
             currentExpressionText.append(".")
             lastDigitEntered = false
             lastDotEntered = true
         }
     }
 
-    fun onOperatorEnter (view: View)
-    {
+    private fun onOperatorEnter(view: View) {
         clearCurrentExpression()
-        if (lastDigitEntered && !errorExpressionEntered)
-        {
+        if (lastDigitEntered && !errorExpressionEntered) {
             currentExpressionText.append((view as Button).text)
             lastDigitEntered = false
             lastDotEntered = false
         }
     }
 
-    fun onEraseEnter (view: View)
-    {
+    private fun onEraseEnter() {
         clearCurrentExpression()
-        if (!currentExpressionText.text.isEmpty())
-        {
-            if (separator.contains(currentExpressionText.text[currentExpressionText.text.length - 1]))
-            {
+        if (currentExpressionText.text.isNotEmpty()) {
+            if (separator.contains(currentExpressionText.text[currentExpressionText.text.length - 1])) {
                 lastDotEntered = false
             }
         }
         this.currentExpressionText.text = this.currentExpressionText.text.dropLast(1)
-        if (!currentExpressionText.text.isEmpty())
-        {
-            if (separator.contains(currentExpressionText.text[currentExpressionText.text.length - 1]))
-            {
+        if (currentExpressionText.text.isNotEmpty()) {
+            if (separator.contains(currentExpressionText.text[currentExpressionText.text.length - 1])) {
                 lastDotEntered = true
-            }
-            else if(digit.contains(currentExpressionText.text[currentExpressionText.text.length - 1]))
-            {
+            } else if (digit.contains(currentExpressionText.text[currentExpressionText.text.length - 1])) {
                 lastDigitEntered = true
             }
         }
-        /*lastDigitEntered = false
-        errorExpressionEntered = false
-        lastDotEntered = false*/
     }
 
-    fun onEqualsEnter (view: View)
-    {
-        if (lastDigitEntered && !errorExpressionEntered)
-        {
-            var currentExpression = currentExpressionText.text.toString()
+    private fun onEqualsEnter() {
+        if (lastDigitEntered && !errorExpressionEntered) {
+            val currentExpression = currentExpressionText.text.toString()
             Log.d("Before infixToRPN: ", currentExpression)
 //            print("Before infixToRPN: " + currentExpression)
-            try
-            {
+            try {
                 var temp: String = infixToRPN(currentExpression)
                 Log.d("After infixToRPN: ", temp)
-                temp = RPNComputation(temp).toString()
-                if(errorExpressionEntered)
-                {
-                    resultExpressionText.text = "Error"
-                }
-                else
-                {
+                temp = functionRPNComputation(temp).toString()
+                if (errorExpressionEntered) {
+                    resultExpressionText.setText(R.string.error_text)
+                } else {
                     resultExpressionText.text = temp
                 }
                 Log.d("After RPNComputation: ", resultExpressionText.text.toString())
 //                val result = expression.evaluate()
 //                resultExpressionText.text = result.toString()
                 lastDotEntered = true
-            }
-            catch (ex:Exception)
-            {
-                resultExpressionText.text="Error"
+            } catch (ex: Exception) {
+                resultExpressionText.setText(R.string.error_text)
                 errorExpressionEntered = true
                 lastDigitEntered = false
             }
@@ -283,27 +226,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         lastDotEntered = false
         isEvaluatedExpression = true
     }
-    fun onAdditionalOptionsEnter (view: View)
-    {
 
-    }
-
-    fun onRadiansDegreeEnter (view: View)
-    {
-
-    }
-
-    fun clearCurrentExpression ()
-    {
-        if (isEvaluatedExpression)
-        {
+    private fun clearCurrentExpression() {
+        if (isEvaluatedExpression) {
             this.currentExpressionText.text = ""
         }
     }
 
-    override fun onClick(v: View)
-    {
-        if (v.id in listOf(
+    override fun onClick(v: View) {
+        when (v.id) {
+            in listOf(
                 R.id.button_0,
                 R.id.button_1,
                 R.id.button_2,
@@ -314,30 +246,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
                 R.id.button_7,
                 R.id.button_8,
                 R.id.button_9
-            ))
-        {
-            onDigitEnter(v)
-        }
-        else if (v.id in listOf(
+            ) -> {
+                onDigitEnter(v)
+            }
+            in listOf(
                 R.id.button_divide,
                 R.id.button_multiply,
-                R.id.button_substract,
+                R.id.button_subtract,
                 R.id.button_sum
-            ))
-        {
-            onOperatorEnter(v)
-        }
-        else if (v.id == R.id.button_dot)
-        {
-            onDotEnter(v)
-        }
-        else if (v.id == R.id.button_equals)
-        {
-            onEqualsEnter(v)
-        }
-        else
-        {
-            onEraseEnter(v)
+            ) -> {
+                onOperatorEnter(v)
+            }
+            R.id.button_dot -> {
+                onDotEnter()
+            }
+            R.id.button_equals -> {
+                onEqualsEnter()
+            }
+            else -> {
+                onEraseEnter()
+            }
         }
     }
 }
