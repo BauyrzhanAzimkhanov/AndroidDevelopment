@@ -26,8 +26,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         initUI()
+        if(savedInstanceState != null && !savedInstanceState.isEmpty)
+        {
+            lastDigitEntered = savedInstanceState.getBoolean("lastDigitEntered", false)
+            errorExpressionEntered = savedInstanceState.getBoolean("errorExpressionEntered", false)
+            lastDotEntered = savedInstanceState.getBoolean("lastDotEntered", false)
+            isEvaluatedExpression = savedInstanceState.getBoolean("isEvaluatedExpression", false)
+            currentExpressionText.text = savedInstanceState.getString("currentExpression", "")
+            resultExpressionText.text = savedInstanceState.getString("resultExpression", "0")
+        }
     }
 
     private fun initUI() {
@@ -53,6 +61,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.buttonDot.setOnClickListener(this)
         binding.buttonEquals.setOnClickListener(this)
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("currentExpression", currentExpressionText.text.toString())
+        outState.putString("resultExpression", resultExpressionText.text.toString())
+        outState.putBoolean("lastDigitEntered", lastDigitEntered)
+        outState.putBoolean("errorExpressionEntered", errorExpressionEntered)
+        outState.putBoolean("lastDotEntered", lastDotEntered)
+        outState.putBoolean("isEvaluatedExpression", isEvaluatedExpression)
+    }
+
 
     private fun getPriority(s: Char): Int {
         val answer = 0
