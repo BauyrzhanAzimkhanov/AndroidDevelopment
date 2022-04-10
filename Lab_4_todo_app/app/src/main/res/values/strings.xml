@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Lab_4_todo_app</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="todoTaskItemPlaceholder">Hello blank fragment</string>
+    <string name="todoTaskItemIdAndTitlePlaceholder">Do linear algebra homework number 3.</string>
+    <string name="todoTaskItemDescriptionPlaceholder">Numbers 14, 15, 16, 17 and so on till 26 problem. Use lecture-time-written conspects.</string>
+    <string name="todoTaskItemCategoryPlaceholder">Study</string>
+    <string name="todoTaskItemDurationPlaceholder">24.07.1987</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

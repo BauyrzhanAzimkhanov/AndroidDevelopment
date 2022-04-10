@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/todoTaskRecyclerViewItem"
+        android:text="@string/todoTaskItemIdAndTitlePlaceholder"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/statusCheckBox"
+        app:layout_constraintEnd_toStartOf="@id/categoryTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.65"/>
+
+    <TextView
+        android:id="@+id/categoryTextView"
+        style="@style/todoTaskRecyclerViewItem"
+        android:text="@string/todoTaskItemCategoryPlaceholder"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/titleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.25"/>
+
+    <CheckBox
+        android:id="@+id/statusCheckBox"
+        style="@style/todoTaskRecyclerViewItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/titleTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.1"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
