@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".TodoTaskDetailsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/titleTextViewDetailed"
+            style="@style/todoTaskRecyclerViewItem"
+            android:text="@string/todoTaskItemIdAndTitlePlaceholder"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/statusCheckBoxDetailed"
+            app:layout_constraintEnd_toStartOf="@id/categoryTextViewDetailed"
+            app:layout_constraintBottom_toTopOf="@id/descriptionTextViewDetailed"
+            app:layout_constraintWidth_percent="0.65"/>
+
+        <TextView
+            android:id="@+id/descriptionTextViewDetailed"
+            style="@style/todoTaskRecyclerViewItem"
+            android:text="@string/todoTaskItemDescriptionPlaceholder"
+            app:layout_constraintTop_toBottomOf="@id/titleTextViewDetailed"
+            app:layout_constraintStart_toEndOf="@id/statusCheckBoxDetailed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/durationTextViewDetailed"/>
+
+        <TextView
+            android:id="@+id/categoryTextViewDetailed"
+            style="@style/todoTaskRecyclerViewItem"
+            android:text="@string/todoTaskItemCategoryPlaceholder"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/titleTextViewDetailed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/descriptionTextViewDetailed"
+            app:layout_constraintWidth_percent="0.25"/>
+
+        <TextView
+            android:id="@+id/durationTextViewDetailed"
+            style="@style/todoTaskRecyclerViewItem"
+            android:text="@string/todoTaskItemDurationPlaceholder"
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextViewDetailed"
+            app:layout_constraintStart_toEndOf="@id/statusCheckBoxDetailed"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <CheckBox
+            android:id="@+id/statusCheckBoxDetailed"
+            style="@style/todoTaskRecyclerViewItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/titleTextViewDetailed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="0.1"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -23,11 +23,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var separator: CharArray = charArrayOf('.')
     private var operationPriorities: Map<Char, Int> = mapOf('+' to 1, '-' to 1, '*' to 2, '/' to 2)
 
+    companion object {
+        private const val LAST_DIGIT_ENTERED = "lastDigitEntered"
+        private const val ERROR_EXPRESSION_ENTERED = "lastDigitEntered"
+        private const val LAST_DOT_ENTERED = "lastDotEntered"
+        private const val IS_EVALUATED_EXPRESSION = "isEvaluatedExpression"
+        private const val CURRENT_EXPRESSION = "currentExpression"
+        private const val RESULT_EXPRESSION = "resultExpression"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         initUI()
+        if (savedInstanceState != null && !savedInstanceState.isEmpty) {
+            lastDigitEntered = savedInstanceState.getBoolean(LAST_DIGIT_ENTERED, false)
+            errorExpressionEntered = savedInstanceState.getBoolean(ERROR_EXPRESSION_ENTERED, false)
+            lastDotEntered = savedInstanceState.getBoolean(LAST_DOT_ENTERED, false)
+            isEvaluatedExpression = savedInstanceState.getBoolean(IS_EVALUATED_EXPRESSION, false)
+            currentExpressionText.text = savedInstanceState.getString(CURRENT_EXPRESSION, "")
+            resultExpressionText.text = savedInstanceState.getString(RESULT_EXPRESSION, "0")
+        }
     }
 
     private fun initUI() {
@@ -52,6 +68,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.buttonSum.setOnClickListener(this)
         binding.buttonDot.setOnClickListener(this)
         binding.buttonEquals.setOnClickListener(this)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(CURRENT_EXPRESSION, currentExpressionText.text.toString())
+        outState.putString(RESULT_EXPRESSION, resultExpressionText.text.toString())
+        outState.putBoolean(LAST_DIGIT_ENTERED, lastDigitEntered)
+        outState.putBoolean(ERROR_EXPRESSION_ENTERED, errorExpressionEntered)
+        outState.putBoolean(LAST_DOT_ENTERED, lastDotEntered)
+        outState.putBoolean(IS_EVALUATED_EXPRESSION, isEvaluatedExpression)
     }
 
     private fun getPriority(s: Char): Int {
@@ -202,7 +228,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (lastDigitEntered && !errorExpressionEntered) {
             val currentExpression = currentExpressionText.text.toString()
             Log.d("Before infixToRPN: ", currentExpression)
-//            print("Before infixToRPN: " + currentExpression)
             try {
                 var temp: String = infixToRPN(currentExpression)
                 Log.d("After infixToRPN: ", temp)
@@ -213,8 +238,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     resultExpressionText.text = temp
                 }
                 Log.d("After RPNComputation: ", resultExpressionText.text.toString())
-//                val result = expression.evaluate()
-//                resultExpressionText.text = result.toString()
                 lastDotEntered = true
             } catch (ex: Exception) {
                 resultExpressionText.setText(R.string.error_text)
