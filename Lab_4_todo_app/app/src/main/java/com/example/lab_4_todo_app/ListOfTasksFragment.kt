@@ -11,30 +11,42 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.random.Random
 import androidx.fragment.app.FragmentManager
+import com.example.lab_4_todo_app.dao.CategoryDao
+import com.example.lab_4_todo_app.dao.TodoTaskDao
+import com.example.lab_4_todo_app.model.TodoTask
+import com.example.lab_4_todo_app.model.Category
 
 
 class ListOfTasksFragment : Fragment() {
-    private lateinit var listOfTodoTasks: ArrayList<TodoTask>
-    private lateinit var listOfCategories: ArrayList<Category>
+    private lateinit var listOfTodoTasks: List<TodoTask>
+    private lateinit var listOfCategories: List<Category>
+    lateinit var dataBase: AppDatabase
+    lateinit var todoTaskDao: TodoTaskDao
+    lateinit var categoryDao: CategoryDao
     lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null && !savedInstanceState.isEmpty) {
-            listOfTodoTasks = savedInstanceState.getParcelableArrayList<TodoTask>(
-                LIST_OF_TODO_TASKS)!!
-            listOfCategories = savedInstanceState.getParcelableArrayList<Category>(
-                LIST_OF_CATEGORIES)!!
+//            listOfTodoTasks = (savedInstanceState.get(
+//                LIST_OF_TODO_TASKS) as ArrayList<TodoTask>?)!!
+//            listOfCategories = (savedInstanceState.get(
+//                LIST_OF_CATEGORIES) as ArrayList<Category>?)!!
         }
         else {
-            listOfCategories = ArrayList<Category>()
-            listOfCategories.add(Category(1, "StudyRelated"))
-            listOfCategories.add(Category(2, "WorkRelated"))
-            listOfTodoTasks = ArrayList<TodoTask>()
-            for (i in 1..9){
-                listOfTodoTasks.add(TodoTask(i, "Do homework" + i, "Prepare to homework" + i, Random.nextBoolean(), listOfCategories.get(1), i.toString()))
-            }
+//            listOfCategories = ArrayList<Category>()
+//            listOfCategories.add(Category(1, "StudyRelated"))
+//            listOfCategories.add(Category(2, "WorkRelated"))
+//            listOfTodoTasks = ArrayList<TodoTask>()
+//            for (i in 1..9){
+//                listOfTodoTasks.add(TodoTask(i, "Do homework" + i, "Prepare to homework" + i, Random.nextBoolean(), listOfCategories.get(1), i.toString()))
+//            }
         }
+        dataBase = MyApplication.instance.getDataBase()!!
+        todoTaskDao = dataBase.todoTaskDao()
+        categoryDao = dataBase.categoryDao()
+        listOfTodoTasks = todoTaskDao.getAllTodoTasks()
+        listOfCategories = categoryDao.getAllCategories()
     }
 
     override fun onCreateView(
@@ -51,11 +63,11 @@ class ListOfTasksFragment : Fragment() {
         return view
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(LIST_OF_TODO_TASKS, listOfTodoTasks)
-        outState.putParcelableArrayList(LIST_OF_CATEGORIES, listOfCategories)
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        outState.putParcelableArrayList(LIST_OF_TODO_TASKS, listOfTodoTasks)
+//        outState.putParcelableArrayList(LIST_OF_CATEGORIES, listOfCategories)
+//    }
 
     companion object {
         @JvmStatic
