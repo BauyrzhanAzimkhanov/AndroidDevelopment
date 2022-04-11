@@ -8,27 +8,45 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.example.lab_4_todo_app.dao.CategoryDao
+import com.example.lab_4_todo_app.dao.TodoTaskDao
+import com.example.lab_4_todo_app.model.TodoTask
+import com.example.lab_4_todo_app.model.Category
 import com.example.lab_4_todo_app.databinding.ActivityMainBinding
 import org.w3c.dom.Text
 
 class TodoTaskDetailsFragment : Fragment() {
 
     lateinit var todoTask: TodoTask
+    lateinit var dataBase: AppDatabase
+    lateinit var todoTaskDao: TodoTaskDao
+    lateinit var categoryDao: CategoryDao
     lateinit var description: TextView
     lateinit var status: CheckBox
     lateinit var duration: TextView
     lateinit var title: TextView
     lateinit var category: TextView
+    lateinit var categoryClassUnit: Category
+
+    var todoTaskId: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null && !savedInstanceState.isEmpty) {
-            todoTask = savedInstanceState.getParcelable<TodoTask>(TODO_TASK)!!
+//            todoTask = savedInstanceState.getParcelable<TodoTask>(TODO_TASK)!!
+            todoTaskId = savedInstanceState.getLong(TODO_TASK_ID)!!
         }
         var bundle: Bundle? = this.arguments
         if(bundle != null && !bundle.isEmpty) {
-           todoTask = bundle.getParcelable<TodoTask>(TODO_TASK)!!
+//           todoTask = bundle.getParcelable<TodoTask>(TODO_TASK)!!
+            todoTaskId = bundle.getLong(TODO_TASK_ID) + 1
         }
+        dataBase = MyApplication.instance.getDataBase()!!
+        todoTaskDao = dataBase.todoTaskDao()
+        categoryDao = dataBase.categoryDao()
+        todoTask = todoTaskDao.getTodoTaskById(todoTaskId)
+        categoryClassUnit = categoryDao.getCategoryById(todoTask.category)
     }
 
     override fun onCreateView(
@@ -39,9 +57,9 @@ class TodoTaskDetailsFragment : Fragment() {
         initUI(view)
         title.text = todoTask.title.toString()
         description.text = todoTask.description
-        status.isChecked = todoTask.status
+        status.isChecked = todoTask.status == true
         duration.text = todoTask.duration
-        category.text = todoTask.category?.title
+        category.text = categoryClassUnit.title
         return view
     }
 
@@ -55,13 +73,15 @@ class TodoTaskDetailsFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(TODO_TASK, todoTask)
+//        outState.putParcelable(TODO_TASK, todoTask)
+        outState.putLong(TODO_TASK_ID, todoTaskId)
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = TodoTaskDetailsFragment()
-        private const val TODO_TASK = "todoTask"
+//        private const val TODO_TASK = "todoTask"
+        private const val TODO_TASK_ID = "todoTaskId"
     }
 
 
