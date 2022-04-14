@@ -28,10 +28,6 @@ class ListOfTasksFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null && !savedInstanceState.isEmpty) {
-//            listOfTodoTasks = (savedInstanceState.get(
-//                LIST_OF_TODO_TASKS) as ArrayList<TodoTask>?)!!
-//            listOfCategories = (savedInstanceState.get(
-//                LIST_OF_CATEGORIES) as ArrayList<Category>?)!!
         }
         else {
 //            listOfCategories = ArrayList<Category>()
@@ -62,12 +58,6 @@ class ListOfTasksFragment : Fragment() {
         recyclerView.adapter = todoTaskAdapter
         return view
     }
-
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        outState.putParcelableArrayList(LIST_OF_TODO_TASKS, listOfTodoTasks)
-//        outState.putParcelableArrayList(LIST_OF_CATEGORIES, listOfCategories)
-//    }
 
     companion object {
         @JvmStatic

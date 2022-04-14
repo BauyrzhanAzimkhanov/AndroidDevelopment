@@ -34,12 +34,10 @@ class TodoTaskDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null && !savedInstanceState.isEmpty) {
-//            todoTask = savedInstanceState.getParcelable<TodoTask>(TODO_TASK)!!
             todoTaskId = savedInstanceState.getLong(TODO_TASK_ID)!!
         }
         var bundle: Bundle? = this.arguments
         if(bundle != null && !bundle.isEmpty) {
-//           todoTask = bundle.getParcelable<TodoTask>(TODO_TASK)!!
             todoTaskId = bundle.getLong(TODO_TASK_ID) + 1
         }
         dataBase = MyApplication.instance.getDataBase()!!
@@ -73,14 +71,12 @@ class TodoTaskDetailsFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-//        outState.putParcelable(TODO_TASK, todoTask)
         outState.putLong(TODO_TASK_ID, todoTaskId)
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = TodoTaskDetailsFragment()
-//        private const val TODO_TASK = "todoTask"
         private const val TODO_TASK_ID = "todoTaskId"
     }
 

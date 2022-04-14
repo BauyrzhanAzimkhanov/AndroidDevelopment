@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var dataBase: AppDatabase
     lateinit var todoTaskDao: TodoTaskDao
     lateinit var categoryDao: CategoryDao
-//    isDetailed
 
     companion object {
     }
@@ -25,13 +24,13 @@ class MainActivity : AppCompatActivity() {
         dataBase = MyApplication.instance.getDataBase()!!
         todoTaskDao = dataBase.todoTaskDao()
         categoryDao = dataBase.categoryDao()
-//        val category1 = Category(categoryId = 1, title = "Work related")
-//        val category2 = Category(categoryId = 2, title = "Stydy related")
-//        categoryDao.insert(category1)
-//        categoryDao.insert(category2)
-//            for (i in 1..20){
-//                todoTaskDao.insert(TodoTask(title = ("Do homework" + i), description = ("Prepare to homework" + i), status = Random.nextBoolean(), duration = i.toString(), category = category1.categoryId))
-//            }
+        val category1 = Category(categoryId = 1, title = "Work related")
+        val category2 = Category(categoryId = 2, title = "Stydy related")
+        categoryDao.insert(category1)
+        categoryDao.insert(category2)
+            for (i in 1..20){
+                todoTaskDao.insert(TodoTask(title = ("Do homework" + i), description = ("Prepare to homework" + i), status = Random.nextBoolean(), duration = i.toString(), category = category1.categoryId))
+            }
         var fragmentTransaction = supportFragmentManager.beginTransaction()
         val listOfTasksFragment = ListOfTasksFragment.newInstance()
         fragmentTransaction.replace(R.id.listFragmentContainer, listOfTasksFragment)
