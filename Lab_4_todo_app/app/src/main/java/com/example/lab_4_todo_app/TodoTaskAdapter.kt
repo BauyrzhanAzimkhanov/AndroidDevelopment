@@ -20,10 +20,6 @@ import androidx.fragment.app.Fragment
 import com.example.lab_4_todo_app.dao.CategoryDao
 import com.example.lab_4_todo_app.dao.TodoTaskDao
 
-
-//import android.R
-
-
 class TodoTaskAdapter(val listOfTodoTasks: List<TodoTask>, val listOfCategories: List<Category>, val context: Context) :
     RecyclerView.Adapter<TodoTaskAdapter.TodoTaskViewHolder>() {
 
@@ -48,10 +44,8 @@ class TodoTaskAdapter(val listOfTodoTasks: List<TodoTask>, val listOfCategories:
             val activity = v.context as AppCompatActivity
             val todoTaskDetailsFragment: Fragment = TodoTaskDetailsFragment()
             val bundle: Bundle = Bundle()
-//            bundle.putParcelable("todoTask", todoTask)
             bundle.putLong(TODO_TASK_ID, position.toLong())
             todoTaskDetailsFragment.arguments = bundle
-//            todoTaskDetailsFragment.(bundle)
             activity.supportFragmentManager.beginTransaction().replace(R.id.listFragmentContainer, todoTaskDetailsFragment).addToBackStack("todoTaskDetailsFragment").commit()
         })
     }
