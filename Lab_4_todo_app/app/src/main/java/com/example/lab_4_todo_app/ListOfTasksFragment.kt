@@ -1,5 +1,6 @@
 package com.example.lab_4_todo_app
 
+import android.R.attr
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -15,11 +16,17 @@ import com.example.lab_4_todo_app.dao.CategoryDao
 import com.example.lab_4_todo_app.dao.TodoTaskDao
 import com.example.lab_4_todo_app.model.TodoTask
 import com.example.lab_4_todo_app.model.Category
+import com.example.lab_4_todo_app.model.Todo
+import android.R.attr.defaultValue
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 
 class ListOfTasksFragment : Fragment() {
     private lateinit var listOfTodoTasks: List<TodoTask>
     private lateinit var listOfCategories: List<Category>
+    private lateinit var todos: List<Todo>
     lateinit var dataBase: AppDatabase
     lateinit var todoTaskDao: TodoTaskDao
     lateinit var categoryDao: CategoryDao
@@ -38,11 +45,18 @@ class ListOfTasksFragment : Fragment() {
 //                listOfTodoTasks.add(TodoTask(i, "Do homework" + i, "Prepare to homework" + i, Random.nextBoolean(), listOfCategories.get(1), i.toString()))
 //            }
         }
-        dataBase = MyApplication.instance.getDataBase()!!
-        todoTaskDao = dataBase.todoTaskDao()
-        categoryDao = dataBase.categoryDao()
-        listOfTodoTasks = todoTaskDao.getAllTodoTasks()
-        listOfCategories = categoryDao.getAllCategories()
+//        dataBase = MyApplication.instance.getDataBase()!!
+//        todoTaskDao = dataBase.todoTaskDao()
+//        categoryDao = dataBase.categoryDao()
+//        listOfTodoTasks = todoTaskDao.getAllTodoTasks()
+//        listOfCategories = categoryDao.getAllCategories()
+        val bundle = this.arguments
+        val listType: Type = object : TypeToken<ArrayList<Todo?>?>() {}.type
+        if (bundle != null && !bundle.isEmpty) {
+            val jsonStringOfTodos: String = bundle.getString("todos", "")
+            todos = Gson().fromJson(jsonStringOfTodos, listType)
+            Log.e("Json size", todos.size.toString())
+        }
     }
 
     override fun onCreateView(
@@ -52,10 +66,12 @@ class ListOfTasksFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_list_of_tasks, container, false)
         val context: Context = view.context
         recyclerView = view.findViewById(R.id.recyclerView)
-        var todoTaskAdapter = TodoTaskAdapter(listOfTodoTasks, listOfCategories, context)
+        var todoAdadpter = TodoAdadpter(todos, context)
+//        var todoTaskAdapter = TodoTaskAdapter(listOfTodoTasks, listOfCategories, context)
         var linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = todoTaskAdapter
+//        recyclerView.adapter = todoTaskAdapter
+        recyclerView.adapter = todoAdadpter
         return view
     }
 
