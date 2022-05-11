@@ -26,6 +26,5 @@ interface ContractInterface {
             fun getTodoTaskById(id: Int, apiService: ApiService): Todo
             fun getCategoryById(id: Int): Category
         }
-
     }
 }

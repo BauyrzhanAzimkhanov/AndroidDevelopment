@@ -19,7 +19,6 @@ class MainActivityPresenter(_view: ContractInterface.View) : ContractInterface.P
         view.initView()
     }
 
-
     override fun getTodoTaskDetails(id: Int, apiService: ApiService): Todo {
         return model.getTodoTaskById(id, apiService)
     }

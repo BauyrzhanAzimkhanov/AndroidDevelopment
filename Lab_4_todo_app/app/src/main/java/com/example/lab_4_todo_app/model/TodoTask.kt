@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-
 @Entity (tableName = "todo_tasks")
 data class TodoTask(
     @PrimaryKey(autoGenerate = true) var todoTaskId: Long? = null,
