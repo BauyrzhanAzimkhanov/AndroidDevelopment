@@ -13,7 +13,7 @@ class App : Application() {
         Stetho.initializeWithDefaults(this)    //
         startKoin {
             androidContext(this@App)    //
-            modules(appModule)    // we inject dependecies from appModule
+            modules(appModule)    // we inject dependencies from appModule
         }
     }
 }

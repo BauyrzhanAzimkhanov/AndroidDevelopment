@@ -6,8 +6,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface TodoApi {
-
     @GET("todos/")
     fun getTodos(): Deferred<Response<List<Todo>>>    // waiting for asynchronous response
-
 }

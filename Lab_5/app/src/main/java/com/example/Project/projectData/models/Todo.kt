@@ -9,7 +9,5 @@ data class Todo(
     val userId: Int,
     val title: String?,
     val completed: Boolean = false,
-
-    //custom
-    var actionType: String = ActionType.UNKNOWN.id
+    var actionType: String = ActionType.UNKNOWN.id     // custom query
 )

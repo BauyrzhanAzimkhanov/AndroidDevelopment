@@ -1,7 +1,6 @@
 package com.example.Project.projectFrontend
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.Project.projectFragments.ParentViewModel
 import com.example.Project.projectData.clickHandlers.ItemClickListener
@@ -24,7 +23,7 @@ class MainViewModel(app: Application) : ParentViewModel() {
     private val roomRepository: TodoRoomRepository
 
     companion object {
-        val USER_ID = 2
+        const val USER_ID = 2
     }
 
     init {
@@ -58,7 +57,7 @@ class MainViewModel(app: Application) : ParentViewModel() {
     }
 
     //room Db operations
-    fun addAllToDatabase(list: List<Todo>) {
+    private fun addAllToDatabase(list: List<Todo>) {
         viewModelScope.launch(Dispatchers.IO) {
             roomRepository.addAllTodos(
                 list
@@ -127,6 +126,5 @@ class MainViewModel(app: Application) : ParentViewModel() {
                 }
             }
         }
-
     }
 }

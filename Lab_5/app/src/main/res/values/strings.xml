@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Project</string>
+    <string name="checkboxAdapterTodoText">&#8203;</string>
+    <string name="imageDescriptionAdapterTodoText">Image of todo task.</string>
+    <string name="addButtonFragmentAddTodoText">Add</string>
+    <string name="backButtonFragmentAddTodoText">Back</string>
+    <string name="textFieldTitleFragmentAddTodoText">title</string>
+    <string name="addButtonFragmentMainText">Add todo</string>
+    <string name="deleteAllButtonFragmentMainText">Delete all</string>
+    <string name="deleteButtonMenuSettingsText">Delete</string>
 </resources>

@@ -95,6 +95,7 @@ class MainFragment : ParentFragment() {
                     }
                     is TodoViewModel.State.Error -> {
                     }
+                    else -> {}
                 }
             }
         )

@@ -14,12 +14,8 @@ import com.example.Project.projectData.clickHandlers.ItemClickListener
 import com.example.Project.projectData.models.ActionType
 import com.example.Project.projectData.models.Todo
 
-
 class TodosAdapter(private val itemClickListener: ItemClickListener) :
     RecyclerView.Adapter<ParentViewHolder>() {
-
-    private val VIEW_TYPE_ERROR = 0
-    private val VIEW_TYPE_NORMAL = 1
 
     private val todos = ArrayList<Todo>()
 
@@ -58,7 +54,7 @@ class TodosAdapter(private val itemClickListener: ItemClickListener) :
 
     override fun getItemCount(): Int = todos.size
 
-    fun getItem(position: Int): Todo? {
+    private fun getItem(position: Int): Todo? {
         return todos[position]
     }
 
@@ -87,7 +83,7 @@ class TodosAdapter(private val itemClickListener: ItemClickListener) :
             cbState.isChecked = todo.completed
 
             vDots.setOnClickListener {
-                var tempItem = todo
+                val tempItem = todo
                 val popup = PopupMenu(
                     itemView.context,
                     vDots,
@@ -120,13 +116,14 @@ class TodosAdapter(private val itemClickListener: ItemClickListener) :
                 itemClickListener.onItemClick(item)
             }
         }
-        fun setMenuClick(item: Todo){
-//            vDots.setOnClickListener {
-//                itemClickListener.onItemMenuClick(item)
-//            }
-        }
+        fun setMenuClick(item: Todo) {}
 
         override fun clear() {}
+    }
+
+    companion object {
+        const val VIEW_TYPE_NORMAL = 1
+        const val VIEW_TYPE_ERROR = 0
     }
 
 }

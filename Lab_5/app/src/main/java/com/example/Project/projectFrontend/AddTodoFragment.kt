@@ -53,9 +53,8 @@ class AddTodoFragment : ParentFragment() {
         }
 
     }
-    fun createTodo(title: String): Todo{
-        val todo = Todo(id = lastIdx + 1, userId = USER_ID, title = title)
-        return todo
+    private fun createTodo(title: String): Todo {
+        return Todo(id = lastIdx + 1, userId = USER_ID, title = title)
     }
 
     override fun setData() {
@@ -65,12 +64,11 @@ class AddTodoFragment : ParentFragment() {
     private fun setAdapter() {
     }
 
-    var lastIdx: Int = 1000
+    private var lastIdx: Int = 1000
     private fun observeViewModel() {
         viewModel.getAllFromDb.observe(viewLifecycleOwner,
             Observer {
                 lastIdx = it.last().id
             })
     }
-
 }
